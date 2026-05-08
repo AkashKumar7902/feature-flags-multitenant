@@ -1,0 +1,28 @@
+name: keepalive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping API + DB
+        run: |
+          set -e
+          for attempt in 1 2 3; do
+            code=$(curl -sS -o /tmp/body -w "%{http_code}" \
+              -X POST https://feature-flags-api-1h32.onrender.com/v1/public/feature-evaluations \
+              -H "Content-Type: application/json" \
+              --max-time 60 \
+              -d '{"organizationSlug":"acme-health","featureKey":"smart_dashboard"}' || echo "000")
+            echo "attempt $attempt: HTTP $code"
+            cat /tmp/body || true
+            echo
+            if [ "$code" = "200" ]; then exit 0; fi
+            sleep 20
+          done
+          exit 1

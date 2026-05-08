@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: byepo-feature-flags-postgres
+    environment:
+      POSTGRES_USER: feature_flags
+      POSTGRES_PASSWORD: feature_flags_password
+      POSTGRES_DB: feature_flags
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U feature_flags -d feature_flags"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:

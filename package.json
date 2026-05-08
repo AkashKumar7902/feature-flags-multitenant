@@ -1,0 +1,35 @@
+{
+  "name": "byepo-feature-flags-pro",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A multi-tenant feature flag management system built with Express, PostgreSQL, and three Next.js frontends.",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "turbo dev",
+    "dev:api": "pnpm --filter @byepo/contracts build && pnpm --filter @byepo/api dev",
+    "dev:super-admin": "pnpm --filter @byepo/contracts build && pnpm --filter @byepo/super-admin dev",
+    "dev:admin": "pnpm --filter @byepo/contracts build && pnpm --filter @byepo/admin dev",
+    "dev:user": "pnpm --filter @byepo/contracts build && pnpm --filter @byepo/user dev",
+    "build": "turbo build",
+    "typecheck": "turbo typecheck",
+    "lint": "turbo lint",
+    "format": "prettier --write .",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:migrate": "pnpm --filter @byepo/api prisma:migrate",
+    "db:deploy": "pnpm --filter @byepo/api prisma:deploy",
+    "db:seed": "pnpm --filter @byepo/api seed",
+    "db:studio": "pnpm --filter @byepo/api prisma:studio",
+    "test": "pnpm --filter @byepo/api test",
+    "test:e2e": "pnpm --filter @byepo/api test:e2e"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.0"
+  }
+}
